@@ -45,3 +45,4 @@ build/
 *.zip
 *.tar.gz
 *.rar
+/secrets.yml

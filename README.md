@@ -1,6 +1,54 @@
 # Final_DataStructures
 Final project for the subject of Data Structures, this will be updated in the next days
 
+# 🛠️ Configuración de la Base de Datos con Docker
+
+Para facilitar el desarrollo y garantizar un entorno consistente, el proyecto utiliza Docker para la base de datos MySQL. Sigue estos pasos para levantar la base de datos:
+
+## Requisitos Previos
+- Docker y Docker Compose instalados en tu sistema
+- Git para clonar el repositorio
+
+## Pasos para Iniciar la Base de Datos
+
+1. **Clonar el repositorio** (si aún no lo has hecho):
+   ```bash
+   git clone https://github.com/Daniel-Chavarro/AirFlow.git
+   cd AirFlow
+   ```
+
+2. **Iniciar la base de datos con Docker Compose**:
+   ```bash
+   docker-compose up -d
+   ```
+   Esto levantará un contenedor MySQL en el puerto 3306 e importará automáticamente el esquema de la base de datos desde el archivo `db/Airflow.sql`.
+
+3. **Verificar que el contenedor esté funcionando**:
+   ```bash
+   docker ps
+   ```
+   Deberías ver un contenedor llamado "mysql-airflow" en ejecución.
+
+## Detalles de Configuración
+
+- **Servidor**: localhost
+- **Puerto**: 3306
+- **Base de datos**: airflow
+- **Usuario**: root
+- **Contraseña**: root
+
+## Detener la Base de Datos
+
+Para detener la base de datos cuando ya no la necesites:
+```bash
+docker-compose down
+```
+
+Para detener y eliminar todos los datos (útil para reiniciar desde cero):
+```bash
+docker-compose down -v
+```
+
 # 🧠 Reglas de Trabajo en Equipo — GitFlow
 
 Este documento define la estrategia de colaboración para el equipo de desarrollo usando Git y el flujo GitFlow. Aplica al desarrollo del sistema de reservas de vuelos.

@@ -153,6 +153,29 @@ public class FlightDAO implements DAOMethods<Flight> {
     }
 
     /**
+     * Returns an ArrayList of Flights based on the provided code.
+     *
+     * @param code the code of the flight to be retrieved
+     * @return an ArrayList of Flights with the specified code
+     * @throws SQLException if a database access error occurs
+     */
+    public ArrayList<Flight> getByCode(String code) throws SQLException {
+        String query = "SELECT f.*, fs.name as status_name, fs.description as status_description " +
+                "FROM flights f " +
+                "JOIN flight_status fs ON f.status_FK = fs.id_PK " +
+                "WHERE f.code LIKE ?";
+
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, code);
+
+        ResultSet resultSet = statement.executeQuery();
+
+        ArrayList<Flight> flights = transformResultsToClassArray(resultSet);
+        statement.close();
+        return flights;
+    }
+
+    /**
      * Transforms the results from a ResultSet into a Flight object.
      *
      * @param resultSet the ResultSet containing flight data
@@ -192,21 +215,7 @@ public class FlightDAO implements DAOMethods<Flight> {
         ArrayList<Flight> flights = new ArrayList<>();
 
         while (resultSet.next()) {
-            Flight flight = new Flight();
-            flight.setId(resultSet.getInt("id_PK"));
-            flight.setAirplane_FK(resultSet.getInt("airplane_FK"));
-            flight.setStatus_FK(resultSet.getInt("status_FK"));
-            flight.setOrigin_city_FK(resultSet.getInt("origin_city_FK"));
-            flight.setDestination_city_FK(resultSet.getInt("destination_city_FK"));
-            flight.setCode(resultSet.getString("code"));
-            flight.setDeparture_time(resultSet.getTimestamp("departure_time").toLocalDateTime());
-            flight.setArrival_time(resultSet.getTimestamp("arrival_time").toLocalDateTime());
-            flight.setPrice_base(resultSet.getFloat("price_base"));
-            
-            // Set status information from join
-            flight.setStatus_name(resultSet.getString("status_name"));
-            flight.setStatus_description(resultSet.getString("status_description"));
-            
+            Flight flight = transformResultsToClass(resultSet);
             flights.add(flight);
         }
 
